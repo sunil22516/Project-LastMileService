@@ -1,0 +1,1283 @@
+%=====================================================
+% LastMile Service BTP Report - MAIN FILE
+%=====================================================
+\documentclass[12pt,a4paper]{report}
+
+%------------ Packages -------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{setspace}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{array}
+\usepackage{xcolor}
+
+% All BTP visuals are stored here on this machine
+\graphicspath{{C:/Users/sunil/Desktop/BTP_visuals/}}
+
+\geometry{
+  left=1in,
+  right=1in,
+  top=1in,
+  bottom=1in
+}
+
+\onehalfspacing
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=black
+}
+
+%------------ Metadata -------------
+\title{Design and Development of a Trust-Based Digital Marketplace\\
+for Brand-Certified Appliance Services in Rural India}
+
+\author{Sunil (2022516) \and Sumit (2022515) \and Priyanshu (2022382) \and Devesh (2022155)\\[4pt]
+B.Tech in Computer Science and Engineering\\
+Indraprastha Institute of Information Technology Delhi (IIIT-Delhi)}
+
+\date{April 2026}
+
+%=====================================================
+\begin{document}
+
+% If your institute gives a cover file, include it here:
+% \input{btech_thesis_cover}
+
+\maketitle
+\pagenumbering{roman}
+
+%-----------------------------------------------------
+\chapter*{Students' Declaration}
+\addcontentsline{toc}{chapter}{Students' Declaration}
+
+We hereby declare that the work presented in the report entitled
+\textbf{``Design and Development of a Trust-Based Digital Marketplace for Brand-Certified Appliance Services in Rural India''},
+submitted by us in partial fulfillment of the requirements for the degree of Bachelor of Technology in Computer Science and Engineering at
+Indraprastha Institute of Information Technology Delhi (IIIT-Delhi), as part of the Entrepreneurship B.Tech Project (BTP),
+is an authentic record of our work carried out under the guidance of
+\textbf{Prof.\ Pankaj Vajpayee}. All sources of information used in this work have been duly acknowledged in the report.
+This work has not been submitted elsewhere for the award of any degree or diploma.
+
+\vspace{1.5cm}
+\noindent
+\textbf{Place:} New Delhi\\
+\textbf{Date:} 25 November 2025 \\[1cm]
+
+\begin{flushright}
+\textbf{Sunil (2022516)}\\
+\textbf{Sumit (2022515)}\\
+\textbf{Priyanshu (2022382)}\\
+\textbf{Devesh (2022155)}\\
+\end{flushright}
+
+%-----------------------------------------------------
+\chapter*{Certificate}
+\addcontentsline{toc}{chapter}{Certificate}
+
+This is to certify that the above statement made by the candidates is correct to the best of my knowledge and that this report,
+entitled \textbf{``Design and Development of a Trust-Based Digital Marketplace for Brand-Certified Appliance Services in Rural India''},
+is a bona fide record of the work carried out by them under my supervision and guidance as part of the Entrepreneurship B.Tech Project at IIIT-Delhi.
+
+\vspace{1.5cm}
+\noindent
+\textbf{Place:} New Delhi \hfill \textbf{Prof.\ Pankaj Vajpayee}\\
+\textbf{Date:} 25 November 2025\hfill Faculty, Entrepreneurship, IIIT-Delhi
+
+%-----------------------------------------------------
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+In the past decade, the penetration of electrical and electronic appliances in rural and semi-urban India has grown rapidly.
+Fans, mixers, televisions, refrigerators and smartphones have become embedded in daily routines, improving comfort, productivity and social participation.
+However, the availability of reliable, affordable and timely after-sales service has not kept pace with this growth.
+Households often depend on informal local technicians, must travel long distances to brand service centres, or simply discard repairable products.
+This results in financial stress, unnecessary e-waste and a gradual erosion of trust in both brands and service providers.
+
+This B.Tech project proposes and develops \textbf{LastMile Service} --- a trust-based digital marketplace that connects three key actors:
+(1) rural and semi-urban consumers who need repair or maintenance services for appliances,
+(2) local technicians who can deliver on-ground service, and
+(3) appliance and device brands that wish to extend their after-sales reach in rural India.
+The platform aims to combine the familiarity and accessibility of local repair with brand-aligned training, transparent pricing and a structured reputation system.
+
+The work in this project spans three interlinked dimensions.
+First, \emph{problem understanding and field research}: a mixed-method study using an online survey (58 respondents) and semi-structured interviews with consumers, technicians and retailers is used to map the current after-sales journey, identify pain points and understand how trust is formed or broken.
+Second, \emph{system design and engineering}: we design and implement a full-stack web platform that supports booking, intelligent technician matching, job tracking and feedback, with explicit attention to rural constraints such as intermittent connectivity and low-end smartphones.
+Third, \emph{business and impact analysis}: we explore partnership models with brands, outline possible revenue streams and unit economics, and simulate a small-scale pilot using realistic workflows and dummy users.
+
+The implemented minimum viable product (MVP) supports customer and technician registration, creation of service requests, automated matching to nearby technicians based on distance, skills and reputation, real-time status tracking, and feedback collection through ratings and short reviews.
+Event logs are used to compute operational metrics such as average response time, job completion rate and technician utilisation, which are relevant to both platform operations and brand reporting.
+
+Overall, the project demonstrates that a structured, trust-based digital platform can make last-mile appliance service more accessible and reliable for rural households, while providing better livelihood opportunities for technicians and a scalable extension channel for brands.
+It also surfaces practical limitations and future directions for taking such a platform from academic prototype to real-world deployment.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{img2.jpg}
+    \caption{High-level overview of the LastMile Service concept: connecting rural households, local technicians and brand partners through a digital platform.}
+    \label{fig:lastmile_concept_overview}
+\end{figure}
+
+%-----------------------------------------------------
+\chapter*{Acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+
+We would like to express our sincere gratitude to our advisor, \textbf{Prof.\ Pankaj Vajpayee}, for his constant guidance, critical feedback and encouragement throughout this project.
+His support helped shape the idea of LastMile Service from a vague frustration into a structured engineering and entrepreneurship problem.
+
+We are thankful to the technicians, shop owners and rural households who generously shared their time and experiences in interviews and phone calls.
+Their stories and constraints grounded the design of this platform in real-world needs rather than assumptions.
+
+We are also grateful to our friends and batchmates for brainstorming sessions, late-night debugging help, and for acting as early users during testing.
+Finally, we thank our families for their patience, motivation and unwavering support during the ups and downs of this project.
+
+%-----------------------------------------------------
+\tableofcontents
+\listoffigures
+\listoftables
+
+\clearpage
+\pagenumbering{arabic}
+
+
+%=====================================================
+\chapter{Introduction}
+\label{chap:intro}
+
+\section{Background}
+
+Over the last few years, the availability of electrical and electronic appliances in rural and semi-urban India has increased significantly.
+Fans, mixers, televisions, refrigerators and smartphones are now considered essential for comfort, productivity and social inclusion.
+This growth has been driven by declining hardware costs, rising rural incomes, government programmes related to electrification and digital access, and aggressive distribution strategies by major brands.
+
+However, after-sales service infrastructure has not expanded at the same pace in many districts.
+Urban customers can easily book brand-authorised service via websites, apps or call centres, and often receive predictable appointment slots.
+In contrast, a rural household may need to travel 30--50 kilometres to the nearest service centre, wait multiple days for spare parts, and deal with uncertain costs.
+For frequent, smaller failures such as fan capacitor issues or mixer motor problems, the gap is often filled by local informal technicians.
+These technicians are accessible and low-cost, but their skills, tools and access to genuine parts vary widely.
+
+This mismatch creates a classic ``last-mile'' problem: products reach rural households, but reliable servicing does not.
+The consequences go beyond inconvenience --- they induce financial strain when appliances fail, increase e-waste when repairable devices are discarded, and gradually erode trust in both brands and local technicians.
+
+\section{Motivation and Origin of the Idea}
+
+The motivation for this project is rooted in lived experiences and repeated anecdotes from relatives and contacts in small towns and villages.
+Stories of ceiling fans lying unrepaired for months, refrigerators transported to district headquarters on rented vehicles, and smartphones replaced rather than repaired because of uncertainty and mistrust are common.
+On the other side, conversations with local technicians reveal a different frustration: they often possess strong practical skills but remain invisible to brands, lack formal recognition, and depend heavily on a small circle of shopkeepers for work.
+
+Existing service aggregators and platforms --- typically designed for metropolitan users --- offer a polished digital experience but make strong assumptions about reliable connectivity, digital payments and dense technician supply.
+Their business and product choices rarely reflect rural constraints such as patchy networks, cash-based transactions or shared smartphones within a household.
+As a result, rural consumers and technicians remain peripheral to mainstream digital service ecosystems.
+
+These observations led to a simple but powerful question:
+\emph{Can we design a platform that takes rural realities seriously, leverages existing local technicians, and still preserves brand-level trust and quality?}
+LastMile Service is an attempt to explore this question through the lens of engineering, product thinking and entrepreneurship.
+
+\section{Ideology and Vision Behind LastMile Service}
+
+The ideology behind LastMile Service combines three threads:
+
+\begin{itemize}
+    \item \textbf{Trust as a first-class feature:} In many rural contexts, trust in a technician or shopkeeper is built over years of interaction.
+    The platform is designed not to replace this trust but to make it visible, portable and accountable through ratings, verifications and transparent histories.
+    \item \textbf{Respect for local expertise:} Rather than assuming that value must flow from a central brand to a passive village, LastMile treats local technicians as partners.
+    The long-term vision is to support their upskilling, documentation and formal recognition.
+    \item \textbf{Brand alignment without over-centralisation:} Brands care about reputation, warranty control and data.
+    The platform aims to provide them with visibility and governance hooks without forcing them to build their own rural micro-infrastructure from scratch.
+\end{itemize}
+
+In the long run, the vision for LastMile Service is to become an infrastructure layer for rural appliance service --- a common protocol and marketplace through which multiple brands, technicians and communities can coordinate, rather than a single-brand captive app.
+
+\section{Problem Statement}
+
+The central problem addressed in this project can be stated as follows:
+
+\medskip
+\noindent
+\textbf{Problem Statement:}\\
+\emph{Rural and semi-urban households in India lack a reliable, convenient and trustworthy mechanism
+to access brand-quality repair and maintenance services for household appliances,
+while local technicians and appliance brands lack a structured channel to discover each other,
+coordinate jobs and build reputations.}
+
+\section{Research Questions}
+
+To explore this problem space in a disciplined way, the project is guided by the following research questions:
+
+\begin{itemize}
+    \item \textbf{RQ1:} How do rural and semi-urban consumers currently discover technicians and make decisions about repair versus replacement?
+    \item \textbf{RQ2:} What are the main trust gaps between consumers, local technicians and brand service networks?
+    \item \textbf{RQ3:} What minimum set of digital workflows (booking, matching, tracking, feedback) can realistically be adopted in rural contexts?
+    \item \textbf{RQ4:} How can we design a matching and reputation system that respects local constraints (distance, connectivity, skills) while remaining simple to understand?
+    \item \textbf{RQ5:} Under what conditions could such a platform be sustainable for technicians, attractive to brands and affordable for consumers?
+\end{itemize}
+
+These questions influence both the qualitative research design and the engineering decisions described in later chapters.
+
+\section{Project Objectives}
+
+Based on the problem statement and research questions, the project has the following objectives:
+
+\begin{itemize}
+    \item \textbf{O1: Ecosystem understanding} --- Build a structured understanding of the rural after-sales ecosystem through primary research with consumers, technicians and dealers, and a review of existing platforms.
+    \item \textbf{O2: Requirements and design} --- Formalise functional and non-functional requirements and propose a system design tailored to rural constraints, including architecture, data model and matching logic.
+    \item \textbf{O3: MVP development} --- Implement a working full-stack MVP that supports end-to-end workflows from service request creation to job completion and feedback.
+    \item \textbf{O4: Data and analytics} --- Instrument the MVP to log key events and derive basic operational metrics such as response time, completion rate and technician utilisation.
+    \item \textbf{O5: Business and impact framing} --- Articulate a plausible business model, partner ecosystem and unit economics for scaling the platform beyond a purely academic prototype.
+\end{itemize}
+
+\section{Scope and Limitations}
+
+The scope of this B.Tech project is intentionally constrained:
+
+\begin{itemize}
+    \item The primary focus is on rural and semi-urban households in a limited geographic region (for example, one or two districts).
+    \item The appliance categories considered include ceiling fans, mixers, televisions and refrigerators, with smartphones treated as an adjacent but important category.
+    \item The technical scope is a web-based MVP, optimised for mobile browsers; native mobile apps and fully offline modes are left to future work.
+    \item Physical logistics such as spare-part supply chains, warranty reimbursement flows and technician transportation are modelled conceptually but not implemented.
+\end{itemize}
+
+Key limitations include the lack of a live, large-scale deployment during the project timeline, reliance on simulated pilots and dummy data for certain evaluations, and the absence of deep integration with brand CRM systems.
+
+\section{Structure of the Report}
+
+The remainder of this report is organised as follows:
+
+\begin{itemize}
+    \item Chapter~\ref{chap:context} analyses the rural after-sales ecosystem, stakeholder landscape and pain points emerging from research.
+    \item Chapter~\ref{chap:literature} reviews related work, including existing service aggregators and rural technology interventions, and positions LastMile Service within this landscape.
+    \item Chapter~\ref{chap:requirements} formalises user personas, functional and non-functional requirements, and high-level usage scenarios.
+    \item Chapter~\ref{chap:design} describes the overall system architecture, data model, matching and reputation mechanisms, and key design choices.
+    \item Chapter~\ref{chap:implementation} details the implementation of the LastMile Service MVP, including technology stack, APIs and front-end workflows.
+    \item Chapter~\ref{chap:business} presents the business model, potential brand partnerships, partner mapping and illustrative unit economics.
+    \item Chapter~\ref{chap:evaluation} discusses evaluation strategy, analytics, pilot simulations and key learnings.
+    \item Chapter~\ref{chap:conclusion} concludes the report, summarises contributions and outlines future work.
+\end{itemize}
+
+%=====================================================
+\chapter{Ecosystem and Problem Context}
+\label{chap:context}
+
+\section{Overview of the Rural After-Sales Ecosystem}
+
+The ecosystem around appliance service in rural and semi-urban India involves multiple actors: end consumers, local technicians, multi-brand retailers, authorised service centres and large appliance brands.
+Their incentives are not always aligned.
+Consumers want quick, affordable and trustworthy service.
+Technicians want stable income, access to spare parts and recognition.
+Brands want to protect their reputation and minimise warranty leakage.
+Retailers care about post-sales satisfaction to maintain repeat sales and preserve local goodwill.
+
+In practice, the network is opaque.
+A household often relies on a nearby shopkeeper or a neighbour's recommendation to find a technician.
+Technicians may work informally with multiple shops or small franchisees but remain invisible to brand headquarters.
+Brands maintain computerised systems and customer-care numbers, but these systems rarely include village-level actors, and outreach is often limited to district headquarters.
+
+\section{Appliance Penetration Trends in Rural India}
+
+Multiple government and industry reports over the last decade have documented a steady increase in appliance penetration in rural India, especially for fans, televisions, basic kitchen appliances and smartphones.
+Electrification schemes and improved rural incomes have played a major role.
+While exact numbers vary across states, three broad trends are clear:
+
+\begin{itemize}
+    \item The \textbf{ownership gap} between urban and rural households is narrowing for basic appliances such as fans and televisions.
+    \item The \textbf{usage intensity} of smartphones has risen sharply, making them both a target for service interventions and a channel through which digital platforms can reach rural users.
+    \item Appliance purchases are increasingly \textbf{aspirational}, with households stretching budgets for branded products, which raises expectations around after-sales service.
+\end{itemize}
+
+Our own survey (described later) is consistent with this picture: almost every respondent reported owning at least one fan and one smartphone, and a significant share reported having televisions and basic kitchen appliances such as mixers or grinders.
+These ownership patterns directly shape the mix of repair and maintenance needs that a platform like LastMile Service must support in its early stages.
+
+\section{Stakeholder Mapping}
+
+For LastMile Service, four primary stakeholder groups are especially relevant.
+
+\subsection*{Rural Consumers}
+
+Typically, rural consumers are households with one to five key appliances.
+Cash flows are often irregular, and the opportunity cost of losing a day's work to travel for service is high.
+Connectivity may be intermittent, and phones are sometimes shared within the household.
+Consumers prefer known local faces but worry about being overcharged or receiving poor-quality repairs.
+Their relationship with brands is often indirect, mediated by local dealers.
+
+\subsection*{Local Technicians}
+
+Local technicians operate within a radius of 5--20 km.
+Some have years of experience but no formal certification; others may be semi-skilled.
+They rely on word-of-mouth referrals and shopkeepers for work.
+Income is volatile, and access to genuine spare parts is constrained by geography and working capital.
+Most technicians own a basic smartphone and use messaging apps, but complex digital workflows are rare in their day-to-day work.
+
+\subsection*{Retailers and Dealers}
+
+Multi-brand shops and small dealerships act as the face of appliance brands in rural markets.
+They sell products, manage basic complaints and often recommend or directly arrange technicians.
+To protect their reputation, they care about whether customers are satisfied long after the sale.
+However, they typically lack tools to monitor service quality or track issues systematically across time.
+
+\subsection*{Brand Service Networks}
+
+Appliance and mobile brands operate call centres, warranty systems and authorised service centres.
+These systems are optimised for cities and large towns.
+In rural areas, brands rely on sparse service centres and ad-hoc arrangements with local workshops.
+They have limited visibility into what actually happens once a product leaves the dealership, especially when customers consult informal technicians.
+
+\subsection*{Platform Operator}
+
+The final stakeholder is the platform operator of LastMile Service itself.
+The operator must balance user experience, data security, technician fairness, brand expectations and financial viability.
+In the context of this B.Tech project, the platform operator is conceptual --- represented by the project team and, in future, a potential startup or partner organisation.
+
+\section{Current Repair Practices and Their Limitations}
+
+The current repair journey for a rural household typically begins when an appliance fails.
+The household may take one of several routes:
+
+\begin{itemize}
+    \item \textbf{Local shop route:} Visit the shop where the appliance was bought and request help.
+    The shopkeeper may recommend an informal technician or a distant authorised centre.
+    \item \textbf{Informal technician route:} Call a known technician directly or ask neighbours for recommendations.
+    \item \textbf{Brand route:} For higher-value products under warranty, the household may attempt to contact the brand's toll-free number or website, often with varying success due to language barriers or connectivity.
+\end{itemize}
+
+To quantify these patterns, we conducted a Google Form survey with $N = 58$ respondents (mix of rural and semi-urban households and a small number of technicians).
+Table~\ref{tab:survey_combined} summarises selected findings related to whom people contact for repairs, what problems they face and how they prefer to book service.
+
+\begin{table}[H]
+    \centering
+    \small
+    \caption{Combined key survey results (N = 58 respondents).}
+    \label{tab:survey_combined}
+    \begin{tabular}{|p{4cm}|p{5.2cm}|c|c|p{3cm}|}
+        \hline
+        \textbf{Question Group} & \textbf{Option / Response} & \textbf{Count} & \textbf{Percentage} & \textbf{Notes} \\
+        \hline
+        Whom do people usually contact for repairs? 
+            & Local technician (nearby)           & 14 & 24.1\% & Single choice \\
+            & Family / friend who repairs         & 13 & 22.4\% &               \\
+            & Shop in the nearest town            & 12 & 20.7\% &               \\
+            & Depends on the problem              & 12 & 20.7\% &               \\
+            & Authorised brand service centre     &  7 & 12.1\% &               \\
+            & \textbf{Total}                      & 58 & 100\%  &               \\
+        \hline
+        Problems faced during repair
+            & No trained technician in village    & 37 & 63.8\% & Multiple choice \\
+            & Travel or transport cost is high    & 35 & 60.3\% &                 \\
+            & Too expensive                       & 35 & 60.3\% &                 \\
+            & Parts not available                 & 34 & 58.6\% &                 \\
+            & Do not know whom to trust           & 33 & 56.9\% &                 \\
+            & Technicians come late               & 32 & 55.2\% &                 \\
+            & Service centre is too far           & 29 & 50.0\% &                 \\
+        \hline
+        Preferred booking / contact methods
+            & Local shop or CSC centre            & 30 & 51.7\% & Multiple choice \\
+            & WhatsApp message                    & 28 & 48.3\% &                 \\
+            & Social media groups                 & 28 & 48.3\% &                 \\
+            & Phone call                          & 25 & 43.1\% &                 \\
+            & Mobile app                          & 25 & 43.1\% &                 \\
+            & In-person only                      & 25 & 43.1\% &                 \\
+        \hline
+        Willingness to use trained technician within 5--7 km
+            & Yes                                 & 20 & 34.5\% & Single choice   \\
+            & Maybe                               & 20 & 34.5\% &                 \\
+            & No                                  & 18 & 31.0\% &                 \\
+            & \textbf{Total}                      & 58 & 100\%  &                 \\
+        \hline
+    \end{tabular}
+\end{table}
+
+The table shows that households heavily rely on nearby local technicians and informal contacts, with authorised brand centres accounting for only a small fraction of first contacts.
+At the same time, major pain points relate to lack of trained technicians, travel costs, uncertainty about whom to trust and spare-part availability.
+Preferences for booking methods are diverse, with local touchpoints, phone and WhatsApp all playing important roles --- an important design input for LastMile.
+
+Figures~\ref{fig:pref_repair}, \ref{fig:repair_replace_customers} and \ref{fig:repair_replace_techs} further illustrate attitudes towards where to go for service and whether to repair or replace faulty appliances.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{img5}
+        \caption{Bar chart}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{img6}
+        \caption{Pie chart}
+    \end{subfigure}
+    \caption{Preferred repair service provider among surveyed customers.}
+    \label{fig:pref_repair}
+\end{figure}
+
+As seen in Figure~\ref{fig:pref_repair}, a majority of respondents prefer brand service centres, but a substantial minority continues to rely on local technicians, and many respondents answer ``mixed/depends''.
+This confirms that any new platform must work \emph{with} local technicians and brand networks rather than trying to replace one with the other.
+
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[b]{0.48\textwidth}
+%         \includegraphics[width=\textwidth]{img7}
+%         \caption{Bar chart}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.48\textwidth}
+%         \includegraphics[width=\textwidth]{img8}
+%         \caption{Pie chart}
+%     \end{subfigure}
+%     \caption{Customer attitudes towards repairing versus replacing faulty appliances.}
+%     \label{fig:repair_replace_customers}
+% \end{figure}
+
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[b]{0.48\textwidth}
+%         \includegraphics[width=\textwidth]{img9}
+%         \caption{Bar chart}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.48\textwidth}
+%         \includegraphics[width=\textwidth]{img10}
+%         \caption{Pie chart}
+%     \end{subfigure}
+%     \caption{Technician attitudes towards repairing versus replacing appliances.}
+%     \label{fig:repair_replace_techs}
+% \end{figure}
+
+Figures~\ref{fig:repair_replace_customers} and~\ref{fig:repair_replace_techs} suggest that most customers prefer to try repair first or decide based on cost, while technicians overwhelmingly favour repair over replacement.
+This alignment creates a favourable context for a service platform that can make repairs more reliable, transparent and convenient.
+
+\section{Identified Pain Points and Opportunity Areas}
+
+Through field conversations and secondary research, several recurring pain points emerge:
+
+\begin{itemize}
+    \item \textbf{Discovery and trust:} Households do not know which technician is trustworthy or qualified for a specific brand or appliance type.
+    \item \textbf{Transparency of costs and quality:} There is little clarity about expected charges, spare-part provenance or the impact of third-party repairs on warranty.
+    \item \textbf{Travel and time costs:} For brand-authorised service, customers often travel long distances, losing both time and income.
+    \item \textbf{Technician livelihood volatility:} Skilled technicians experience uneven demand and depend heavily on a small set of intermediaries.
+    \item \textbf{Brand visibility:} Brands have limited data on rural failure patterns, service resolutions and customer satisfaction.
+\end{itemize}
+
+These qualitative insights are supported by the survey results on pain points, visualised in Figure~\ref{fig:painpoints}.
+
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}[b]{0.48\textwidth}
+%         \includegraphics[width=\textwidth]{img13}
+%         \caption{Bar chart}
+%     \end{subfigure}
+%     \hfill
+%     \begin{subfigure}[b]{0.48\textwidth}
+%         \includegraphics[width=\textwidth]{img14}
+%         \caption{Pie chart}
+%     \end{subfigure}
+%     \caption{Pain points mentioned in interviews and survey responses.}
+%     \label{fig:painpoints}
+% \end{figure}
+
+Quality and trust issues, spare-part availability and transparency around timing and costs emerge as the most frequently cited concerns, followed by technician availability and low earnings for technicians themselves.
+These pain points translate directly into opportunity areas for LastMile Service: verified technician profiles, standardised pricing slabs, support for spare-part logistics, transparent status updates and mechanisms to improve technician livelihoods.
+
+Table~\ref{tab:painpoints} summarises how these issues map to different stakeholders and outlines the corresponding opportunity space.
+
+\begin{table}[H]
+    \centering
+    \caption{Summary of key pain points and opportunity areas in rural after-sales service.}
+    \label{tab:painpoints}
+    \begin{tabular}{p{3.2cm}p{3cm}p{7cm}}
+        \toprule
+        \textbf{Pain Point} & \textbf{Primary Stakeholder} & \textbf{Opportunity for LastMile Service} \\
+        \midrule
+        Lack of trusted technician discovery & Consumer & Provide verified technician profiles, ratings and brand tags. \\
+        Unclear pricing and quality & Consumer / Technician & Standardise pricing slabs; record job histories; enable feedback loops. \\
+        Long travel to service centres & Consumer & Enable doorstep service by local technicians linked to brands. \\
+        Volatile technician income & Technician & Offer more predictable job flow and performance-based incentives. \\
+        Poor visibility into rural repairs & Brand & Aggregate anonymised data on failures, resolutions and satisfaction. \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+%=====================================================
+\chapter{Survey Methodology}
+\label{chap:survey_methodology}
+
+\section{Overview}
+
+To ground the design of LastMile Service in real user needs, we conducted a structured household survey focused on appliance ownership and repair experiences.
+The goal was to understand how rural and semi-urban households currently handle breakdowns of home appliances and mobile phones, which channels they use for repair, what problems they face in the process, and how open they are to a new platform that connects them to trained local technicians.
+
+The survey specifically targeted households that own at least one major appliance or smartphone and have had at least one repair experience in the recent past.
+Responses were collected using a Google Form titled \emph{``Home Appliance \& Mobile Repair Experience Survey''}, shared via messaging apps and supplemented by phone-assisted filling where needed.
+
+\section{Target Population and Sampling}
+
+The target population for the survey consisted of rural and semi-urban households in India.
+Links to the Google Form were circulated through personal networks, local contacts and student families, with an emphasis on households located outside major metropolitan areas.
+Where respondents were not comfortable filling the form themselves, their answers were recorded over a phone call by the project team.
+
+The survey does not claim to be statistically representative at a national level.
+Instead, it is used as an exploratory instrument to capture patterns, pain points and preferences that inform the requirements and design of the platform.
+
+\section{Questionnaire Design}
+
+The questionnaire comprised multiple-choice and short-answer questions grouped into four broad sections:
+
+\begin{itemize}
+    \item \textbf{Household and location profile:} basic information such as state, district and settlement type (village, town).
+    \item \textbf{Appliance ownership and repair history:} types of appliances owned, which devices had required repair in the last year and how those repairs were handled.
+    \item \textbf{Repair journey and pain points:} whom respondents usually contact for repairs, distance and time to service, and common problems faced during the process.
+    \item \textbf{Digital access and openness to a platform:} smartphone availability, preferred channels for booking service, and willingness to use a platform that connects them to trained local technicians.
+\end{itemize}
+
+Most questions were closed-ended to allow basic quantitative analysis, with a few open-ended questions inviting respondents to describe specific bad experiences or suggestions in their own words.
+
+\section{Data Collection Procedure}
+
+The survey was administered over a defined period using a Google Form.
+The link was shared via WhatsApp and other messaging channels to contacts residing in rural and semi-urban areas.
+In some cases, the project team conducted phone calls and filled the form on behalf of respondents who were less comfortable with online forms.
+
+Duplicate or clearly incomplete responses were removed during cleaning.
+The final dataset, summarised in Table~\ref{tab:survey_sample}, forms the basis for the descriptive statistics and charts used in the ecosystem, requirements and evaluation chapters of this report.
+
+\section{Sample Summary}
+
+Table~\ref{tab:survey_sample} provides a concise summary of the survey sample.
+
+\begin{table}[H]
+    \centering
+    \caption{Summary of household survey sample (N = 58).}
+    \label{tab:survey_sample}
+    \begin{tabular}{p{5cm}p{8cm}}
+        \toprule
+        \textbf{Metric} & \textbf{Value} \\
+        \midrule
+        Number of responses & \textbf{58} complete household responses after basic cleaning. \\
+        States / districts covered & Multiple districts across India, with a concentration in small towns and rural blocks in North India. \\
+        Data collection mode & Online Google Form, supplemented by phone-assisted entries for respondents less comfortable with digital forms. \\
+        Settlement type & Mix of rural villages and semi-urban towns, with a majority of responses coming from rural or peri-urban locations. \\
+        Data collection period & Late 2025 (approximately four weeks from launch of the Google Form). \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Selected Quantitative Findings}
+
+While the survey is exploratory, several quantitative patterns are directly relevant for the design of LastMile Service.
+This section highlights a subset of closed-ended questions; detailed counts are given in Table~\ref{tab:combined_survey_results}, and corresponding visualisations are shown in Figures~\ref{fig:service_pref_customers}--\ref{fig:desired_features_all}.
+
+\subsection*{Whom do people usually contact for repairs?}
+
+Respondents most frequently rely on nearby local technicians, family or friends who know how to repair, and shops in the nearest town.
+Authorised brand service centres account for a much smaller share of first contacts.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img5}
+        \caption{Bar chart.}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img6}
+        \caption{Pie chart.}
+    \end{subfigure}
+    \caption{Preferred repair service among customers (brand centre vs.\ local technician vs.\ mixed).}
+    \label{fig:service_pref_customers}
+\end{figure}
+
+\subsection*{Repair versus replacement tendencies}
+
+For most common appliances, both customers and technicians exhibit a strong \emph{repair-first} mindset, with replacement considered mainly when devices are very old or repair costs are unusually high.
+
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}{0.49\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{img7}
+%         \caption{Customers (bar).}
+%     \end{subfigure}
+%     \begin{subfigure}{0.49\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{img8}
+%         \caption{Customers (pie).}
+%     \end{subfigure}
+%     \caption{Customer preferences on repair vs.\ replace decisions.}
+%     \label{fig:repair_vs_replace_customers}
+% \end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img9}
+        \caption{Technicians (bar).}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img10}
+        \caption{Technicians (pie).}
+    \end{subfigure}
+    \caption{Technician perspectives on repair vs.\ replace decisions.}
+    \label{fig:repair_vs_replace_technicians}
+\end{figure}
+
+\subsection*{Openness to a digital platform}
+
+Across the combined sample, a clear majority is positive or strongly positive about the idea of a digital platform that connects them to trained technicians, with only a small neutral or uncertain segment.
+
+% \begin{figure}[H]
+%     \centering
+%     \begin{subfigure}{0.49\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{img11}
+%         \caption{Bar chart.}
+%     \end{subfigure}
+%     \begin{subfigure}{0.49\textwidth}
+%         \centering
+%         \includegraphics[width=\textwidth]{img12}
+%         \caption{Pie chart.}
+%     \end{subfigure}
+%     \caption{Support for the proposed digital platform idea across all respondents.}
+%     \label{fig:platform_support}
+% \end{figure}
+
+\subsection*{Pain points and desired features}
+
+Pain points related to quality and trust, spare parts availability, transparency of timing and earnings for technicians emerged strongly (see Figure~\ref{fig:painpoints_all} in Chapter~\ref{chap:context}).
+When asked about desired platform features, respondents emphasised ratings and verification, live tracking and estimated time of arrival (ETA), spare-part support and home pickup/service (Figure~\ref{fig:desired_features_all}).
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img15}
+        \caption{Bar chart.}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img16}
+        \caption{Pie chart.}
+    \end{subfigure}
+    \caption{Desired platform features mentioned by survey respondents.}
+    \label{fig:desired_features_all}
+\end{figure}
+
+\subsection*{Aggregated key results}
+
+Table~\ref{tab:combined_survey_results} consolidates a few of the most decision-relevant questions, combining counts and percentages for quick reference.
+These results directly inform the functional requirements and value propositions of LastMile Service.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Selected key survey results (N = 58).}
+\label{tab:combined_survey_results}
+\begin{tabular}{p{4cm}p{5.2cm}ccp{3cm}}
+\toprule
+\textbf{Question group} & \textbf{Option / response} & \textbf{Count} & \textbf{Percentage} & \textbf{Notes} \\
+\midrule
+Whom do people usually contact for repairs? 
+    & Local technician (nearby)           & 14 & 24.1\% & Single choice \\
+    & Family / friend who repairs         & 13 & 22.4\% &                \\
+    & Shop in the nearest town            & 12 & 20.7\% &                \\
+    & Depends on the problem              & 12 & 20.7\% &                \\
+    & Authorised brand service centre     &  7 & 12.1\% &                \\
+    & \textbf{Total}                      & 58 & 100\%  &                \\
+\midrule
+Problems faced during repair
+    & No trained technician in village    & 37 & 63.8\% & Multiple choice \\
+    & Travel or transport cost is high    & 35 & 60.3\% &                 \\
+    & Too expensive                       & 35 & 60.3\% &                 \\
+    & Parts not available                 & 34 & 58.6\% &                 \\
+    & Do not know whom to trust           & 33 & 56.9\% &                 \\
+    & Technicians come late               & 32 & 55.2\% &                 \\
+    & Service centre is too far           & 29 & 50.0\% &                 \\
+\midrule
+Preferred booking / contact methods
+    & Local shop or CSC centre            & 30 & 51.7\% & Multiple choice \\
+    & WhatsApp message                    & 28 & 48.3\% &                 \\
+    & Social media groups                 & 28 & 48.3\% &                 \\
+    & Phone call                          & 25 & 43.1\% &                 \\
+    & Mobile app                          & 25 & 43.1\% &                 \\
+    & In-person only                      & 25 & 43.1\% &                 \\
+\midrule
+Willingness to use trained technician within 5--7 km
+    & Yes                                 & 20 & 34.5\% & Single choice   \\
+    & Maybe                               & 20 & 34.5\% &                 \\
+    & No                                  & 18 & 31.0\% &                 \\
+    & \textbf{Total}                      & 58 & 100\%  &                 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These observations feed directly into the requirements, personas and matching logic developed in the next chapters, and later into possible machine-learning extensions such as demand prediction or intelligent routing.
+
+%=====================================================
+\chapter{Related Work and Market Landscape}
+\label{chap:literature}
+
+\section{Existing Service Platforms}
+
+Several digital platforms currently operate in the appliance and device service domain.
+Examples include Urban Company, OnsiteGo, Servify and various brand-specific service apps.
+They typically focus on urban and metropolitan markets, providing on-demand booking, subscription plans and extended warranties.
+Their design assumes reliable internet connectivity, digital payments and a dense network of service professionals.
+
+From the perspective of LastMile Service, these platforms serve as useful reference points for:
+\begin{itemize}[noitemsep]
+    \item how users express service needs digitally (issue categories, photos, preferred time slots);
+    \item how technician profiles, ratings, certifications and pricing models are presented;
+    \item how customer support and escalation flows are structured once a job is booked.
+\end{itemize}
+
+However, their rural presence is limited, and their onboarding processes are not tuned for small-town technicians with lower digital literacy, intermittent connectivity or cash-based transactions.
+
+\section{Rural Technology Interventions}
+
+Beyond appliance service, various rural technology interventions have experimented with hybrid models that combine local actors with digital backbones.
+Examples include agricultural advisory platforms, telemedicine pilots and rural e-commerce initiatives.
+Common themes across these efforts include:
+\begin{itemize}[noitemsep]
+    \item leveraging local intermediaries (e.g., village-level entrepreneurs) to bridge digital gaps;
+    \item designing interfaces that minimise typing and rely on voice, icons or structured options;
+    \item handling intermittent connectivity through offline-first or asynchronous workflows.
+\end{itemize}
+
+LastMile Service draws inspiration from these patterns, treating local technicians and dealers as crucial intermediaries rather than bypassing them.
+
+\section{Competitive and Complementary Players}
+
+The broader competitive and complementary landscape for LastMile Service includes:
+\begin{itemize}[noitemsep]
+    \item \textbf{Urban-focused aggregators:} Urban Company and similar platforms, which could extend into rural areas if they had a suitable technician network and appropriate economics.
+    \item \textbf{Device-care and protection startups:} Platforms such as OnsiteGo and Servify, which partner with brands to offer extended warranties, protection plans and replacement services.
+    \item \textbf{Brand service apps:} Official apps from large appliance and handset brands that allow registration of products and booking of service complaints, typically limited to a single-brand ecosystem.
+\end{itemize}
+
+Rather than compete head-on with all of these players, LastMile Service positions itself as a rural-first, technician-centric layer that can potentially integrate with or feed into multiple upstream systems.
+
+\section{Gap Analysis}
+
+A simplified gap analysis reveals that:
+\begin{itemize}[noitemsep]
+    \item there is no widely adopted rural-first digital platform dedicated specifically to appliance service (as opposed to generic home services);
+    \item local technicians are rarely integrated into brand ecosystems in a structured, data-driven manner;
+    \item reputation systems, where they exist, are designed for highly online users and are not optimised for low literacy or intermittent connectivity;
+    \item brands face a blind spot when it comes to rural failures and repairs undertaken outside their official networks.
+\end{itemize}
+
+These gaps substantiate the relevance of a project like LastMile Service and help narrow its focus.
+
+\section{Positioning of LastMile Service}
+
+Within this landscape, LastMile Service positions itself as a \emph{trust-based, brand-aligned marketplace} with three main differentiators:
+\begin{itemize}[noitemsep]
+    \item a primary focus on semi-urban and rural households, where constraints differ sharply from metros;
+    \item an explicit emphasis on onboarding, supporting and gradually upskilling local technicians, including mechanisms for brand-linked certification;
+    \item an architecture that can surface aggregated data and insights to brands while retaining the flexibility to support multiple appliances, geographies and future machine-learning modules.
+\end{itemize}
+
+Figure~\ref{fig:lastmile_overview} in Chapter~\ref{chap:context} visually summarises this positioning, showing how rural households, communication channels and brand partners are connected through the LastMile Service platform.
+
+The remainder of the report translates this positioning into concrete requirements, design, implementation, evaluation and, in future work, data pipelines and machine-learning components such as recommendation models and support chatbots.
+
+%=====================================================
+\chapter{Requirements and User Personas}
+\label{chap:requirements}
+
+\section{User Personas}
+
+To ground the design in reality, we formalise four user personas derived from interviews, survey responses and secondary research.
+The core entities and flows illustrated in Figure~\ref{fig:entity_flow} (Chapter~\ref{chap:intro}) influenced how these personas interact with the system.
+
+\subsection*{P1: Rural Homemaker (Consumer)}
+
+The rural homemaker is often the primary decision-maker for day-to-day appliance usage.
+She manages multiple responsibilities and may not always have the time or means to travel to distant service centres.
+Digital comfort is moderate: she can use WhatsApp and make calls but may not be comfortable with long text forms or complex apps.
+She values punctuality, clear prices and the reassurance of dealing with a known or vetted technician.
+
+\subsection*{P2: Local Technician}
+
+The local technician owns basic tools, travels by bike and serves multiple villages.
+He may have learnt the trade through apprenticeship rather than formal training.
+Digital comfort includes using smartphones for calls, messaging and simple apps, but not necessarily complex dashboards.
+He wants more predictable job flow, fewer unpaid trips and access to genuine parts at reasonable cost.
+He is cautious about platforms that might reduce his autonomy or earnings.
+
+\subsection*{P3: Shop Owner / Dealer}
+
+The shop owner sells appliances from multiple brands and operates in a tightly knit local market where reputation matters.
+He currently acts as an informal bridge between consumers and technicians, maintaining a mental list of whom to call for which problem.
+He would like better visibility into whether service requests were handled satisfactorily and how they reflect on his shop and brand relationships.
+
+\subsection*{P4: Brand Service Manager}
+
+The brand service manager works at regional or national level and is responsible for customer satisfaction, warranty adherence and service KPI targets.
+She is used to dashboards, CRM systems and formal reports.
+Her ideal outcome from a platform like LastMile Service is better visibility into rural service activity and technician quality without having to build a dispersed field team from scratch.
+
+\section{Business Model Canvas}
+
+Figure~\ref{fig:bmc} summarises the overall business logic of LastMile Service
+using the Business Model Canvas framework. It captures, on a single page, the
+key partners, activities, resources, value propositions, customer segments and
+revenue/cost structure discussed in this chapter.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img26.png} % <-- your BMC image file
+    \caption{Business Model Canvas for LastMile Service.}
+    \label{fig:bmc}
+\end{figure}
+
+\section{Functional Requirements}
+
+Combining insights from personas and the problem context, the key functional requirements are:
+\begin{enumerate}[label=F\arabic*.,noitemsep]
+    \item User registration and authentication for consumers, technicians, dealers and admins.
+    \item Creation of service requests specifying appliance type, brand, issue description and preferred time slot.
+    \item Discovery of available technicians based on location, skills, brand-certification tags and ratings.
+    \item Automated or semi-automated assignment of technicians to service requests.
+    \item Real-time status updates for jobs: created, accepted, in-progress, completed, cancelled.
+    \item Notifications to users (via SMS, WhatsApp or in-app) for key events such as assignment, rescheduling and completion.
+    \item Capture of payment details and basic invoice generation, with flexibility for cash-based transactions.
+    \item Feedback and rating mechanisms for completed jobs, visible to future consumers and the platform.
+    \item Admin and operator dashboards to monitor jobs, technicians and basic analytics.
+\end{enumerate}
+
+\section{Non-functional Requirements}
+
+Non-functional requirements are equally important in rural settings:
+\begin{itemize}[noitemsep]
+    \item \textbf{Usability:} Interfaces must be simple, using clear icons, short labels and minimal free-text input.
+    \item \textbf{Performance:} The platform should be usable on low-end Android devices over 3G or unstable 4G connections.
+    \item \textbf{Reliability:} Critical flows (job creation, status updates) must be robust against dropped connections and retries.
+    \item \textbf{Security and privacy:} Phone numbers, addresses and other personally identifiable information should be protected and visible only to authorised parties.
+    \item \textbf{Scalability:} The architecture should support gradual growth in users and jobs without major rework.
+\end{itemize}
+
+\section{Usage Scenarios}
+
+Representative usage scenarios include:
+\begin{itemize}[noitemsep]
+    \item A consumer uses her smartphone to raise a service request for a non-working fan, receives a technician assignment, tracks status updates and then rates the service after completion.
+    \item A technician logs in each morning, sees a list of assigned jobs with locations and issues, updates statuses through the day and reviews his rating trends over time.
+    \item An admin monitors all open jobs in a district and intervenes if a request remains unassigned or unaccepted beyond a threshold time.
+    \item A brand service manager periodically reviews aggregated dashboards on rural service volume, response times and satisfaction scores to decide where to invest in training or additional technician capacity.
+\end{itemize}
+
+These scenarios inform the design of user flows, screens and, later, the data captured for analytics and machine-learning models.
+
+%=====================================================
+\chapter{System Design}
+\label{chap:design}
+
+\section{Architecture Overview}
+
+The LastMile Service system follows a multi-tier architecture with separate layers for presentation, application logic and data storage.
+While the deployed MVP is implemented as a modular monolith, the design is guided by microservices-style patterns so that individual modules can be split out in future.
+
+The high-level architecture, inspired by standard microservices patterns, is illustrated in Figure~\ref{fig:system_architecture}.
+
+% \begin{figure}[H]
+%     \centering
+%     \includegraphics[width=\textwidth]{img3}
+%     \caption{Microservices-style patterns (API gateway, BFF, CQRS, event sourcing and saga orchestration) that inform the architecture of the LastMile Service backend.}
+%     \label{fig:system_architecture}
+% \end{figure}
+
+The main components are:
+\begin{itemize}[noitemsep]
+    \item \textbf{Frontend:} A responsive web application (e.g., React with Vite / Next.js) serving consumers, technicians, dealers and admins through role-based views.
+    \item \textbf{Backend API:} A RESTful API implemented using Node.js and Express that encapsulates business logic, handles validation, authentication and authorisation, and exposes endpoints for mobile/desktop clients.
+    \item \textbf{Database:} A document or relational database (e.g., MongoDB or PostgreSQL) storing users, technician profiles, service requests, reviews and audit logs.
+    \item \textbf{Notification Services:} Integration with SMS / WhatsApp gateways and email providers for transactional notifications.
+    \item \textbf{Analytics and ML Layer (future-ready):} A separate store or pipeline that consumes event logs from the backend (job creation, status transitions, ratings) to support dashboards, technician-performance analytics and, in future work, machine-learning models for matching and a support chatbot.
+\end{itemize}
+
+\section{Key Modules}
+
+\subsection{Authentication and User Management}
+
+This module provides registration and login flows for consumers, technicians, dealers and admins.
+Technicians may require additional verification steps (for example, uploading ID proof or declaring skills and brands handled).
+Authentication is handled using JSON Web Tokens (JWTs), and role-based access control restricts sensitive operations such as technician approval and manual job reassignment.
+
+\subsection{Service Request Management}
+
+Consumers can create new service requests by specifying appliance category, brand, a short issue description and location (address plus coarse coordinates where available).
+Requests are stored with a unique identifier and an initial status of \texttt{Created}.
+Optional fields such as photos or preferred time slots can be added to improve technician preparation and later analytics.
+
+\subsection{Technician Discovery and Matching}
+
+When a request is created, the system identifies candidate technicians based on:
+\begin{itemize}[noitemsep]
+    \item service radius around the customer's location;
+    \item skill tags for appliance categories;
+    \item brand-certification tags, where available;
+    \item current workload and recent reliability metrics.
+\end{itemize}
+
+A scoring function (Section~\ref{sec:matching_reputation}) combines these factors to rank technicians.
+Depending on configuration, the system may auto-assign the top-ranked technician or allow technicians to accept requests from a pool.
+All decisions and candidate lists are logged so that they can later be used to train a data-driven model.
+
+\subsection{Job Tracking and Feedback}
+
+Throughout the job lifecycle, technicians update status transitions such as \texttt{Accepted}, \texttt{EnRoute}, \texttt{InProgress} and \texttt{Completed}.
+Consumers see simplified status labels and can contact the technician if needed (for example, by phone or WhatsApp).
+Upon completion, the consumer can rate the experience and optionally leave a short review, contributing to the technician's reputation and providing training data for future recommendation models.
+
+
+\section{Data Model}
+
+Figure~\ref{fig:erd} summarises the logical data model underlying the MVP at a conceptual level.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{img}
+    \caption{Simplified relationship between key entities in the LastMile Service MVP (service requests, technician profiles and reviews).}
+    \label{fig:erd}
+\end{figure}
+
+The core entities are:
+
+\begin{itemize}[noitemsep]
+    \item \texttt{User}: Base record for all users, including role (consumer, technician, admin, dealer), contact details and authentication metadata.
+    \item \texttt{TechnicianProfile}: Technician-specific details such as skills (appliance categories), service radius, brand tags, verification status and aggregate rating.
+    \item \texttt{ServiceRequest}: Records individual service needs with appliance information, issue description, status, timestamps and links to the requesting consumer and assigned technician.
+    \item \texttt{Review}: Stores consumer feedback (rating plus short text) after job completion.
+    \item \texttt{JobStatusHistory}: An audit log capturing all status transitions for a given job, used both for debugging and for computing KPIs such as response and resolution time.
+\end{itemize}
+
+
+%=====================================================
+\chapter{Implementation}
+\label{chap:implementation}
+
+\section{Technology Stack}
+
+The MVP is implemented using the following stack:
+
+\begin{itemize}
+    \item \textbf{Frontend:} React (with Vite or Next.js) for component-based UI and routing; responsive design ensures usability on mobile browsers.
+    \item \textbf{Backend:} Node.js with Express.js for REST APIs and business logic.
+    \item \textbf{Database:} MongoDB Atlas or a similar managed instance for rapid iteration and flexible schema evolution.
+    \item \textbf{Styling:} Tailwind CSS or CSS modules for consistent styling and responsive layouts.
+    \item \textbf{Deployment:} Frontend deployed on a service such as Vercel/Netlify; backend deployed on Render/Railway or a virtual private server.
+    \item \textbf{Data and ML (future work):} Python-based notebooks (Pandas, scikit-learn / PyTorch) planned for training recommendation models and support chatbots on anonymised job and feedback logs.
+\end{itemize}
+
+\section{Backend Implementation}
+
+The backend exposes RESTful endpoints grouped by domain: authentication, users, service requests, technicians and reviews.
+Example routes include:
+
+\begin{itemize}
+    \item \verb|POST /api/auth/register|, \verb|POST /api/auth/login|
+    \item \verb|POST /api/requests| to create a new service request
+    \item \verb|GET /api/requests/:id| to fetch request details
+    \item \verb|POST /api/requests/:id/assign| to assign a technician
+    \item \verb|POST /api/requests/:id/status| to update job status
+    \item \verb|POST /api/reviews| to submit feedback
+\end{itemize}
+
+Middleware layers enforce authentication, validate request bodies and handle errors in a consistent JSON format.
+Database interactions are encapsulated using models or repositories, reducing coupling between routes and persistence details.
+Event logs for each status transition are written to a separate collection so that they can later be used to compute KPIs and train machine-learning models.
+
+\section{Frontend Implementation}
+
+The frontend is organised into pages and reusable components:
+
+\begin{itemize}
+    \item \textbf{Landing and onboarding:} Introduces the platform, explains the roles and guides users to sign-up or login.
+    \item \textbf{Consumer dashboard:} Shows active and past service requests, with a clear call-to-action for creating a new request.
+    \item \textbf{Technician dashboard:} Lists assigned jobs, their statuses and locations, with simple controls for updating progress.
+    \item \textbf{Admin view:} Provides an overview of all jobs, filters by status and district, and access to technician management tools.
+\end{itemize}
+
+Forms balance expressiveness with simplicity; they rely heavily on dropdowns and fixed options to reduce typing.
+The layouts follow a “card + list” pattern so that the same UI works well on both desktop and small-screen Android devices.
+
+Representative screens from the current frontend prototype are shown in Figures~\ref{fig:landing_ui} and~\ref{fig:technician_join_ui}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img18}
+    \caption{Consumer-facing landing page of the LastMile Service MVP, highlighting the core value proposition and entry point for creating a service request.}
+    \label{fig:landing_ui}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img24}
+    \caption{Technician onboarding screen where local technicians can register, provide contact details and declare appliance skills.}
+    \label{fig:technician_join_ui}
+\end{figure}
+
+Additional flows, such as browsing verified professionals (Figure~\ref{fig:browse_professionals}) and contacting support (Figure~\ref{fig:contact_ui}), are also implemented.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img17}
+    \caption{Browse-and-discover screen showing a list of service professionals with filters and basic pricing information.}
+    \label{fig:browse_professionals}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img20}
+    \caption{Contact and support form that allows users to submit detailed queries or escalations to the platform operator.}
+    \label{fig:contact_ui}
+\end{figure}
+
+\section{Security and Privacy Considerations}
+
+Even as an academic MVP, basic security and privacy practices are followed:
+
+\begin{itemize}
+    \item Passwords are hashed using a strong algorithm (e.g., bcrypt) before storage.
+    \item JWT-based authentication ensures stateless session handling.
+    \item Role checks are enforced at route level to prevent privilege escalation.
+    \item Sensitive information such as exact addresses or phone numbers is only shown to parties who need it to complete the job.
+    \item Logs used for analytics or future ML training are anonymised so that individual households and technicians cannot be re-identified.
+\end{itemize}
+
+%=====================================================
+\chapter{Business Model and Partner Ecosystem}
+\label{chap:business}
+
+\section{Value Proposition}
+
+\subsection*{For Consumers}
+
+For rural consumers, LastMile Service offers:
+
+\begin{itemize}
+    \item A single, simple channel to request service without negotiating across multiple shops.
+    \item Transparent, predictable pricing slabs for common issues.
+    \item Visibility into the identity and reputation of the technician visiting their home.
+\end{itemize}
+
+\subsection*{For Technicians}
+
+For local technicians, the platform provides:
+
+\begin{itemize}
+    \item Access to a larger and more predictable stream of jobs.
+    \item A digital track record of completed work and ratings that can be used to negotiate better terms with brands or shops.
+    \item Opportunities to participate in training modules and brand-certification programmes.
+\end{itemize}
+
+Figure~\ref{fig:tech_portal_screens} illustrates two representative technician-facing screens from the prototype.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img21}
+        \caption{Certification workflow for uploading ID/ITI proof and completing a safety quiz.}
+        \label{fig:certification_screen}
+    \end{subfigure}\hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img23}
+        \caption{Training programmes catalogue with brand-aligned modules for different appliance categories.}
+        \label{fig:training_screen}
+    \end{subfigure}
+    \caption{Technician portal screens supporting verification and upskilling.}
+    \label{fig:tech_portal_screens}
+\end{figure}
+
+\subsection*{For Brands and Partners}
+
+For appliance and mobile brands, as well as device-care platforms, LastMile Service can:
+
+\begin{itemize}
+    \item Extend after-sales reach into rural areas without opening numerous physical centres.
+    \item Provide structured data on failures, resolutions and customer satisfaction.
+    \item Serve as a channel to roll out training, safety guidelines and documentation to the technician network.
+\end{itemize}
+
+For brand managers, a separate entry point is exposed (Figure~\ref{fig:schedule_demo}) so that they can request a demo and discuss custom integrations.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{img25}
+    \caption{Brand-facing \emph{Schedule a Demo} screen for initiating partnerships and integrations.}
+    \label{fig:schedule_demo}
+\end{figure}
+
+\section{Potential Partner Companies}
+
+Based on preliminary mapping, partner categories include appliance brands, mobile brands and service/insurance platforms.
+Table~\ref{tab:partners} summarises a few illustrative examples.
+
+\begin{table}[H]
+    \centering
+    \caption{Illustrative partner companies and why they are relevant.}
+    \label{tab:partners}
+    \begin{tabular}{p{3cm}p{3cm}p{7cm}}
+        \toprule
+        \textbf{Company} & \textbf{Category} & \textbf{Relevance} \\
+        \midrule
+        LG Electronics & Appliance brand & Strong rural presence through fan and appliance sales; can benefit from structured rural service coverage. \\
+        Xiaomi / Redmi & Mobile brand & Popular in semi-urban and rural markets; doorstep repair reduces the need for long travel. \\
+        Vivo / Oppo & Mobile brand & High adoption in smaller towns; partnership can improve customer satisfaction where service centres are sparse. \\
+        Havells / Whirlpool & Appliance brands & Large installed base of fans and white goods in rural households; improved after-sales can enhance brand loyalty. \\
+        Urban Company, OnsiteGo, Servify & Platforms & Urban or pan-India service and protection players that could use a rural technician network for deeper reach. \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Revenue Streams}
+
+Possible revenue streams for LastMile Service include:
+
+\begin{itemize}
+    \item \textbf{Per-job commission:} A small platform fee on completed jobs, structured so that technicians still receive the majority of the visit fee.
+    \item \textbf{Technician subscriptions:} Optional premium plans for technicians that unlock better visibility, priority in matching and access to training content.
+    \item \textbf{Brand partnerships:} Annual contracts with brands for co-branded service programmes and access to aggregated analytics and ML-based insights (for example, failure hotspots, common part issues).
+\end{itemize}
+
+\section{Illustrative Unit Economics}
+
+To build intuition, consider a typical fan repair.
+
+\begin{itemize}
+    \item A consumer pays a fixed visit fee plus any part cost (e.g., capacitor replacement).
+    \item The technician receives most of the visit fee and may receive a small performance bonus for high ratings.
+    \item The platform retains a modest commission to fund operations, support and continued product development, including analytics dashboards and future machine-learning components such as recommendation models and chatbots.
+\end{itemize}
+
+These assumptions can be expanded into detailed per-job contribution calculations, including one-time technician onboarding costs, expected job volumes and break-even analysis for different districts and appliance mixes.
+%=====================================================
+\chapter{Evaluation, Analytics and Learnings}
+\label{chap:evaluation}
+
+\section{Data Logging and Metrics}
+
+The platform logs key events such as service request creation, assignment, status updates and review submissions.
+From these logs, several operational metrics can be derived:
+
+\begin{itemize}
+    \item \textbf{Average response time:} time from request creation to technician acceptance.
+    \item \textbf{Average resolution time:} time from acceptance to completion.
+    \item \textbf{Job completion rate} and distribution of cancellation reasons.
+    \item \textbf{Technician utilisation:} fraction of working hours associated with active jobs.
+    \item \textbf{Rating metrics:} average rating, rating distribution and rating trajectory over time for technicians.
+\end{itemize}
+
+These event logs are stored in the same database as core entities, forming an implicit ``analytics layer'' that can be queried using standard aggregation pipelines.
+Visualisations of these metrics (e.g., histograms, time-series plots and cohort charts) can be generated in external notebooks or dashboards to identify bottlenecks, outliers and opportunities for improvement.
+
+Importantly, this log data is also the starting point for future machine-learning work.
+For example, historical matches, completion outcomes and ratings can be used to train models that predict \emph{which} technician is likely to perform best for a given request, or to power an intelligent support chatbot that suggests next steps to users.
+
+\section{Pilot Simulation}
+
+Due to constraints on running a fully fledged field pilot within the project timeline, a simulated pilot was conducted:
+
+\begin{itemize}
+    \item A set of dummy consumer accounts (representing households in two villages) was created.
+    \item A small pool of technicians with different skills, service radii and baseline ratings was configured.
+    \item A sequence of service requests spanning different appliances and issue types was generated over a notional time period.
+\end{itemize}
+
+The matching algorithm and job flows were then exercised end-to-end.
+During this simulation, status transitions were recorded in real time, and hypothetical ratings were assigned to explore how technician reputation evolves as more jobs are completed.
+
+\section{Results and Observations}
+
+The simulation highlights several encouraging patterns:
+
+\begin{itemize}
+    \item The scoring-based matching strategy strikes a reasonable balance between minimising travel distance and respecting skill and brand tags.
+    \item Average response times remain within a few hours, even when technicians are allowed a grace window to accept or decline jobs.
+    \item The admin dashboard views make it easy to spot outlier jobs (for example, those stuck in ``Created'' or ``Accepted'' for too long) and intervene manually.
+\end{itemize}
+
+At the same time, the pilot surfaces areas for improvement:
+
+\begin{itemize}
+    \item Notification reliability must be improved under intermittent connectivity, for example by adding queued SMS fallbacks to app or web notifications.
+    \item Status labels should be simplified and localised for end users, with clear explanations of what each state means in practice.
+    \item The matching algorithm could benefit from learning-based adjustments that incorporate success histories rather than relying only on hand-tuned weights.
+\end{itemize}
+
+\section{Qualitative Feedback}
+
+Informal user testing with friends and family playing the roles of consumers and technicians yields useful qualitative feedback:
+
+\begin{itemize}
+    \item Consumers appreciate being able to see whether their request has been seen and accepted by a technician, but they would like status labels and key instructions in local languages.
+    \item Technicians like having a consolidated view of upcoming jobs but request offline access to job details when travelling or in low-signal areas.
+    \item Admin users find the job overview helpful but suggest additional filters (for example, by appliance category, severity or village cluster).
+\end{itemize}
+
+These insights feed directly into the future work roadmap, especially around improving usability, offline behaviour and the design of data-driven features.
+
+%=====================================================
+\chapter{Conclusion and Future Work}
+\label{chap:conclusion}
+
+\section{Summary of Contributions}
+
+This project set out to explore whether a digital marketplace could meaningfully improve the last-mile delivery of appliance service in rural India.
+Its main contributions are:
+
+\begin{itemize}
+    \item A structured understanding of the rural after-sales ecosystem, including stakeholder roles, current repair practices and pain points grounded in survey data.
+    \item A system design for LastMile Service, including architecture, data model, matching and reputation mechanisms tailored to rural constraints.
+    \item Implementation of a full-stack MVP that allows consumers to request service, technicians to manage jobs and admins to monitor operations.
+    \item Basic analytics and a simulated pilot that demonstrate how operational metrics such as response and resolution times can be measured from platform logs.
+    \item A preliminary business and partner ecosystem framing that situates LastMile within the broader landscape of brands, aggregators and device-care platforms.
+\end{itemize}
+
+\section{Limitations}
+
+The work presented in this report has important limitations:
+
+\begin{itemize}
+    \item The pilot is simulated rather than fully deployed in a rural setting; real-world behaviour under connectivity, trust and cash-flow constraints remains to be validated.
+    \item Offline-first capabilities are limited; the current MVP assumes at least intermittent connectivity for core flows such as job creation and updates.
+    \item Integrations with brand CRM systems, warranty databases and spare-part ordering platforms are not yet implemented.
+    \item Machine-learning components such as data-driven matching, demand forecasting or conversational assistance are only outlined conceptually and not yet trained or deployed.
+\end{itemize}
+
+\section{Future Work}
+
+Promising directions for future work include:
+
+\begin{itemize}
+    \item Extending the MVP into a production-grade platform with native Android support, robust offline handling and stronger notification guarantees.
+    \item Collaborating with a small set of brands, NGOs or local entrepreneurs to run a live district-level pilot and measure real-world impact on repair times, costs and technician livelihoods.
+    \item Training data-driven models on historical logs to improve technician matching (learning the weights in the scoring function), estimate no-show risk and forecast demand by appliance category and locality.
+    \item Developing an intelligent support chatbot that can operate in multiple Indian languages, guide users through request creation, perform basic troubleshooting and answer questions about pricing, safety and warranty.
+    \item Building a structured learning layer for technicians, including micro-courses, quizzes and digital badges, and linking this progression to brand-recognised certification flows.
+    \item Exploring policy and governance questions around data ownership, technician rights and consumer protection when rural repair activity becomes more digitally mediated.
+\end{itemize}
+
+\section*{Closing Remarks}
+
+LastMile Service demonstrates that with thoughtful design, it is possible to bring the structure and transparency of digital platforms into the messy realities of rural appliance repair.
+While the journey from academic prototype to deployed solution is long, this project provides a concrete starting point, a technical foundation and a vocabulary for further collaboration between engineers, brands, technicians and rural communities.
+The data and architecture put in place also open the door to richer machine-learning and chatbot-based features that can gradually make the platform smarter, more personalised and more accessible over time.
+
+%=====================================================
+\bibliographystyle{plain}
+\nocite{*} 
+\bibliography{references} % Create references.bib with your sources
+
+\end{document}

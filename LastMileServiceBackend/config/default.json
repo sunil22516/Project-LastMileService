@@ -1,0 +1,5 @@
+{
+  "port": 4000,
+  "apiPrefix": "/api",
+  "frontendOrigin": "http://localhost:5173"
+}
